@@ -1,0 +1,5 @@
+Dieses Repository enthält Lösungsvorschläge zu den Übungen, die in der Vorlesung Web-Engineering behandelt werden. Bitte beachtet, dass in der Programmierung immer mehrere Wege zum Ziel führen und eure Lösung nicht exakt genau so aussehen muss wie hier dargestellt. Eure Lösung kann ganz anders aussehen, aber trotzdem richtig oder vielleicht sogar besser als der Vorschlag hier ist, der eher allgemein und einfach gehalten ist, um jeden von euch mitnehmen zu können. 
+
+Bitte nutzt dieses Repository nur, wenn ihr eine Aufgabe nicht lösen konntet (schreibt also nicht einfach ab!) und mit der nächsten Aufgabe weitermachen möchtet. Meldet euch lieber, wenn ihr Fragen habt oder etwas nicht versteht. Ich vertraue euch da - denn ihr entscheidet, wie viel ihr aus der Vorlesung mitnehmt :)
+
+Für jede Übung findet ihr im Repository einen eigenen Ordner. Ihr habt also teilweise auch Code, der sich wiederholt. Jeder Ordner kann als eigenes Projekt in VS Code importiert werden. Macht das bitte auch so und verhindert damit Konflikte, die durch unterschiedliche Versionen in den unterschiedlichen Ordnern ausgelöst werden könnten. 
