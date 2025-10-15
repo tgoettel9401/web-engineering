@@ -1,2 +1,2 @@
 # Aufgabe 4
-Setze auf dem Rechner für Ticketpreise auf (aus Aufgabe 2 oder 3) und schreib einen Unit-Test für deine Berechnungsmethode berechneTicketpreis
+Setze auf dem Rechner für Ticketpreise auf (aus Aufgabe 3) und lass dir für jede Person zusätzlich zum Alter auch noch den Namen ausgeben. Dann erzeugst du für jede Person ein Objekt von der Klasse Person (die du auch erstellst). Alle Personen speicherst du in einer Liste und berechnest dann den Gesamtpreis ganz am Ende. Pro Person gibst du in deiner Ausgabe zusätzlich auch noch den Namen der Person aus. 
