@@ -1,18 +1,2 @@
-## Getting Started
-
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
-
-## Folder Structure
-
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+# Aufgabe 3
+Setze auf dem Rechner für Ticketpreise auf und füge jetzt zunächst eine Abfrage ein, für wie viele Personen Preise berechnet werden sollen. Anschließend führst die die Abfrage nach dem Wochentag einmalig aus und fragst dann für jede Person das Alter ab. Zuletzt gibst du in einer Liste das Alter der Personen mit dem jeweiligen Preis sowie einen Gesamtpreis aus. 
