@@ -1,0 +1,608 @@
+openapi: 3.1.0
+info:
+  title: API definition for managing students
+  version: 1.0.0
+  description: A API to manage students, courses, teachers and rooms
+servers:
+  - url: https://api.studentmanagement.de/v1
+    description: Production Environment
+  - url: https://api-test.studentmanagement.de/v1
+    description: Test Environment
+
+paths:
+  /students:
+    get:
+      tags:
+        - students
+      summary: Get all students
+      responses:
+        '200':
+          description: Get a list of all students
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+    post:
+      tags:
+        - students
+      summary: Create a new student
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentInput'
+      responses:
+        '201':
+          description: Student has been created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+  /students/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: The student's ID
+    get:
+      tags:
+        - students
+      summary: Get a student by his ID
+      responses:
+        '200':
+          description: Student Details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '404':
+          description: Student has not been found with the given id
+    put:
+      tags:
+        - students
+      summary: Update a student
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentInput'
+      responses:
+        '200':
+          description: Student has been updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '404':
+          description: Student has not been found with the given id
+    delete:
+      tags:
+        - student
+      summary: Delete a student
+      responses:
+        '204':
+          description: Student has been deleted successfully
+        '404':
+          description: Student has not been found with the given id
+
+  /students/{studentId}/courses/{kursId}:
+    parameters:
+      - name: studentId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The student's ID
+      - name: courseId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The course's ID
+    post:
+      tags:
+        - students
+      summary: Enroll a student to a course
+      responses:
+        '200':
+          description: Successfully enrolled
+        '404':
+          description: Student or Course has not been found
+    delete:
+      tags:
+        - students
+      summary: Unregister a student from a course
+      responses:
+        '204':
+          description: Successfully unregistered
+        '404':
+          description: Student or Course has not been found
+
+  /courses:
+    get:
+      tags:
+        - courses
+      summary: Get all courses
+      responses:
+        '200':
+          description: A list of all courses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+    post:
+      tags:
+        - courses
+      summary: Create a new course
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseInput'
+      responses:
+        '201':
+          description: Course has been created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+  /courses/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The course's ID
+    get:
+      tags:
+        - courses
+      summary: Get a course by its ID
+      responses:
+        '200':
+          description: Details of the course
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '404':
+          description: Course not found
+    put:
+      tags:
+        - courses
+      summary: Update a course
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseInput'
+      responses:
+        '200':
+          description: Course successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '404':
+          description: Course not found
+    delete:
+      tags:
+        - courses
+      summary: Delete a course
+      responses:
+        '204':
+          description: Course successfully deleted
+        '404':
+          description: Course has not been found
+
+  /teachers:
+    get:
+      tags:
+        - Teacher
+      summary: Get all teachers
+      responses:
+        '200':
+          description: A list of all teachers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Teacher'
+    post:
+      tags:
+        - Teacher
+      summary: Create a new teacher
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeacherInput'
+      responses:
+        '201':
+          description: Teacher created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Teacher'
+  /teachers/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The teacher's ID
+    get:
+      tags:
+        - Teacher
+      summary: Get a teacher by its ID
+      responses:
+        '200':
+          description: Teacher's Details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Teacher'
+        '404':
+          description: Teacher not found
+    put:
+      tags:
+        - Teacher
+      summary: Update a teacher
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeacherInput'
+      responses:
+        '200':
+          description: Teacher successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Teacher'
+        '404':
+          description: Teacher not found
+    delete:
+      tags:
+        - Teacher
+      summary: Delete a teacher
+      responses:
+        '204':
+          description: Teacher successfully deleted
+        '404':
+          description: Teacher not found
+
+  /rooms:
+    get:
+      tags:
+        - Rooms
+      summary: Get all rooms
+      responses:
+        '200':
+          description: A list of rooms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Room'
+    post:
+      tags:
+        - Rooms
+      summary: Create a new room
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoomInput'
+      responses:
+        '201':
+          description: room has been created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+  /rooms/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID of the roomes
+    get:
+      tags:
+        - Rooms
+      summary: room returned by its ID
+      responses:
+        '200':
+          description: Details of the roomes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '404':
+          description: room not found
+    put:
+      tags:
+        - Rooms
+      summary: room update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoomInput'
+      responses:
+        '200':
+          description: room has been updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '404':
+          description: room not found
+    delete:
+      tags:
+        - Rooms
+      summary: room delete
+      responses:
+        '204':
+          description: room deleted successfully
+        '404':
+          description: room not found
+
+components:
+  schemas:
+    Student:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique ID of a student
+          example: 101
+        firstname:
+          type: string
+          description: First name of a student
+          example: Max
+        lastname:
+          type: string
+          description: Last name of a student
+          example: Mustermann
+        matrikelnummer:
+          type: string
+          description: Matrikelnummer of a student
+          example: "S987654"
+        enrolledCourses:
+          type: array
+          items:
+            $ref: '#/components/schemas/CourseSimple'
+          description: List of courses the student has enrolled for
+      required:
+        - id
+        - firstname
+        - lastname
+        - matrikelnummer
+
+    StudentInput:
+      type: object
+      properties:
+        firstname:
+          type: string
+          description: First name of a student
+          example: Erika
+        lastname:
+          type: string
+          description: Last name of a student
+          example: Mustermann
+        matrikelnummer:
+          type: string
+          description: Matrikelnummer
+          example: "S123456"
+      required:
+        - firstname
+        - lastname
+        - matrikelnummer
+
+    Course:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique ID of a course
+          example: 201
+        name:
+          type: string
+          description: Name of the course
+          example: Einführung in die Programmierung
+        description:
+          type: string
+          description: Short description of a course
+          example: Grundlagen der Informatik und Python
+        teacher:
+          $ref: '#/components/schemas/TeacherSimple'
+          description: The teacher hosting the course
+        room:
+          $ref: '#/components/schemas/RoomSimple'
+          description: The room the course will happen in
+        studentIds:
+          type: array
+          items:
+            type: integer
+          description: List of IDs for enrolled students
+      required:
+        - id
+        - name
+        - teacher
+        - room
+
+    CourseInput:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the course
+          example: Fortgeschrittene Datenbanken
+        description:
+          type: string
+          description: Short description of the course
+          example: Vertiefung in SQL und NoSQL
+        teacherId:
+          type: integer
+          description: Id of the teacher
+          example: 301
+        roomId:
+          type: integer
+          description: ID of the room
+          example: 401
+      required:
+        - name
+        - teacherId
+        - roomId
+
+    CourseSimple:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique ID of the course
+          example: 201
+        name:
+          type: string
+          description: Name of the course
+          example: Einführung in die Programmierung
+      required:
+        - id
+        - name
+
+    Teacher:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique ID of a teacher
+          example: 301
+        firstname:
+          type: string
+          description: Firstname of the teacher
+          example: Prof. Dr. Anna
+        lastname:
+          type: string
+          description: Lastname of the teacher
+          example: Schmidt
+        areaOfExpertise:
+          type: string
+          description: Area of expertise
+          example: Informatik
+      required:
+        - id
+        - firstname
+        - lastname
+
+    TeacherInput:
+      type: object
+      properties:
+        firstname:
+          type: string
+          description: Firstname of the Teacher
+          example: Prof. Dr. Klaus
+        lastname:
+          type: string
+          description: Lastname of the Teacher
+          example: Müller
+        areaOfExpertise:
+          type: string
+          description: Area of Expertise
+          example: Mathematik
+      required:
+        - firstname
+        - lastname
+
+    TeacherSimple:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique ID of the teacher
+          example: 301
+        name:
+          type: string
+          description: Full name of the teacher
+          example: Prof. Dr. Anna Schmidt
+      required:
+        - id
+        - name
+
+    Room:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique ID of the room
+          example: 401
+        name:
+          type: string
+          description: Name of the room
+          example: room A205
+        capacity:
+          type: integer
+          description: Maximum number of people
+          example: 50
+        equipment:
+          type: string
+          description: Equipment
+          example: Beamer, Whiteboard
+      required:
+        - id
+        - name
+        - capacity
+
+    RoomInput:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the room
+          example: Hörsaal C10
+        capacity:
+          type: integer
+          description: Maximum number of people
+          example: 120
+        equipment:
+          type: string
+          description: Equipment of the room
+          example: Großer Beamer, Mikrofon
+      required:
+        - name
+        - capacity
+
+    RoomSimple:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique ID of the room
+          example: 401
+        name:
+          type: string
+          description: Name of the room
+          example: room A205
+      required:
+        - id
+        - name
