@@ -16,7 +16,7 @@ class AppTest {
     void testUngueltigesAlter() {
         double expected = -1.0;
         double actual = App.berechneTicketpreis(-5, "montag");
-        assertEquals(expected, actual, DELTA);
+        assertEquals(expected, actual); // assertEquals funktioniert ohne Delta
     }
 
     @Test
@@ -24,7 +24,7 @@ class AppTest {
     void testKleinkindFrei() {
         double expected = 0.00;
         double actual = App.berechneTicketpreis(4, "dienstag");
-        assertEquals(expected, actual, DELTA);
+        assertEquals(expected, actual, DELTA); // oder auch mit Delta
     }
 
     // --- 2. Altersgruppen-Tests (am Wochenende, ohne Rabatt) ---
