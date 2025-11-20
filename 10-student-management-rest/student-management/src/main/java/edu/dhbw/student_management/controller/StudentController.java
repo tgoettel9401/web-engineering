@@ -2,7 +2,6 @@ package edu.dhbw.student_management.controller;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,29 +13,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.dhbw.student_management.entity.Student;
+import edu.dhbw.student_management.service.StudentService;
 
 @RestController
 @RequestMapping("/api/v1/students")
 public class StudentController {
 
-    private final Student student;
-    private final List<Student> students;
+    private final StudentService studentService;
 
-    public StudentController(Student student, List<Student> students) {
-        this.student = student;
-        this.students = students;
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
     }
 
     /**
-     * Erstellt einen neuen Studenten.
+     * Ruft eine Liste aller registrierten Studenten ab.
+     * Endpunkt: GET /api/v1/students
      *
-     * @param student Das im Request-Body übermittelte Studenten-Objekt.
-     * @return Das erstellte Studenten-Objekt (inkl. der zugewiesenen ID).
+     * @return Eine Liste aller Studenten.
      */
-    @PostMapping
-    public Student createStudent(@RequestBody Student student) {
-        // Hier erstellen wir später den Studenten in der Datenbank
-        return student;
+    @GetMapping
+    public List<Student> getAllStudents() {
+        // Hier greifen wir später auf die Datenbank zu und geben alle Studenten zurück
+        return studentService.getAllStudents();
     }
 
     /**
@@ -50,7 +48,19 @@ public class StudentController {
     public Student getStudentById(@PathVariable Long id) {
         // Hier greifen wir später auf die Datenbank zu und laden den Studenten aus der
         // Datenbank
-        return student;
+        return studentService.getStudentById(id);
+    }
+
+    /**
+     * Erstellt einen neuen Studenten.
+     *
+     * @param student Das im Request-Body übermittelte Studenten-Objekt.
+     * @return Das erstellte Studenten-Objekt (inkl. der zugewiesenen ID).
+     */
+    @PostMapping
+    public Student createStudent(@RequestBody Student student) {
+        // Hier erstellen wir später den Studenten in der Datenbank
+        return studentService.createStudent(student);
     }
 
     /**
@@ -64,7 +74,7 @@ public class StudentController {
     @PutMapping("/{id}")
     public Student updateStudent(@PathVariable Long id, @RequestBody Student studentDetails) {
         // Hier greifen wir später auf die Datenbank zu und aktualisieren den Studenten
-        return student;
+        return studentService.updateStudent(id, studentDetails);
     }
 
     /**
@@ -76,19 +86,7 @@ public class StudentController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteStudent(@PathVariable Long id) {
         // Hier greifen wir später auf die Datenbank zu und löschen den Studenten
-        return new ResponseEntity<>(HttpStatusCode.valueOf(204));
-    }
-
-    /**
-     * Ruft eine Liste aller registrierten Studenten ab.
-     * Endpunkt: GET /api/v1/students
-     *
-     * @return Eine Liste aller Studenten.
-     */
-    @GetMapping
-    public List<Student> getAllStudents() {
-        // Hier greifen wir später auf die Datenbank zu und geben alle Studenten zurück
-        return students;
+        return studentService.deleteStudent(id);
     }
 
 }
