@@ -50,6 +50,14 @@ public class StudentService {
      */
     public Student updateStudent(Long id, Student studentDetails) {
         // Hier greifen wir später auf die Datenbank zu und aktualisieren den Studenten
+        Student student = findStudent(id);
+
+        student.setFirstName(studentDetails.getFirstName());
+        student.setLastName(studentDetails.getLastName());
+        student.setMatrikelnummer(studentDetails.getMatrikelnummer());
+        student.getEnrolledCourses().clear();
+        student.getEnrolledCourses().addAll(studentDetails.getEnrolledCourses());
+
         return student;
     }
 
@@ -60,7 +68,15 @@ public class StudentService {
      */
     public ResponseEntity<String> deleteStudent(Long id) {
         // Hier greifen wir später auf die Datenbank zu und löschen den Studenten
-        return new ResponseEntity<>(HttpStatusCode.valueOf(204));
+        boolean removed = students.removeIf(s -> s.getId().equals(id));
+        return new ResponseEntity<>(HttpStatusCode.valueOf(removed ? 204 : 404));
+    }
+
+    private Student findStudent(Long id) {
+        return students.stream()
+                .filter(s -> s.getId().equals(id))
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("Student not found with id " + id));
     }
 
 }

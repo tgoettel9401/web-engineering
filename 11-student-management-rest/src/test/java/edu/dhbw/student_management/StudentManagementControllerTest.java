@@ -1,5 +1,6 @@
 package edu.dhbw.student_management;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class StudentManagementControllerTest {
         Student student2 = new Student(2L, "Student 2", "2", "00002");
         Student student3 = new Student(3L, "Student 3", "3", "00003");
         Student student4 = new Student(4L, "Student 4", "4", "00004");
-        List<Student> students = Arrays.asList(student, student2, student3, student4);
+        List<Student> students = new ArrayList<>(Arrays.asList(student, student2, student3, student4));
         studentService = new StudentService(student, students);
         studentController = new StudentController(studentService);
     }
