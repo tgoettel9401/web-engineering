@@ -8,6 +8,8 @@ servers:
     description: Production Environment
   - url: https://api-test.studentmanagement.de/v1
     description: Test Environment
+  - url: "https://api-dev.studentmanagement.de/v1"
+    description: Development Environment
 
 paths:
   /students:
@@ -16,14 +18,14 @@ paths:
         - students
       summary: Get all students
       responses:
-        '200':
+        "200":
           description: Get a list of all students
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Student'
+                  $ref: "#/components/schemas/Student"
     post:
       tags:
         - students
@@ -33,14 +35,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StudentInput'
+              $ref: "#/components/schemas/StudentInput"
       responses:
-        '201':
+        "201":
           description: Student has been created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Student'
+                $ref: "#/components/schemas/Student"
+        "500":
+          description: Error has happened while communicating to Database
   /students/{id}:
     parameters:
       - name: id
@@ -55,13 +59,13 @@ paths:
         - students
       summary: Get a student by his ID
       responses:
-        '200':
+        "200":
           description: Student Details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Student'
-        '404':
+                $ref: "#/components/schemas/Student"
+        "404":
           description: Student has not been found with the given id
     put:
       tags:
@@ -72,24 +76,24 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StudentInput'
+              $ref: "#/components/schemas/StudentInput"
       responses:
-        '200':
+        "200":
           description: Student has been updated successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Student'
-        '404':
+                $ref: "#/components/schemas/Student"
+        "404":
           description: Student has not been found with the given id
     delete:
       tags:
-        - student
+        - students
       summary: Delete a student
       responses:
-        '204':
+        "204":
           description: Student has been deleted successfully
-        '404':
+        "404":
           description: Student has not been found with the given id
 
   /students/{studentId}/courses/{kursId}:
@@ -111,18 +115,18 @@ paths:
         - students
       summary: Enroll a student to a course
       responses:
-        '200':
+        "200":
           description: Successfully enrolled
-        '404':
+        "404":
           description: Student or Course has not been found
     delete:
       tags:
         - students
       summary: Unregister a student from a course
       responses:
-        '204':
+        "204":
           description: Successfully unregistered
-        '404':
+        "404":
           description: Student or Course has not been found
 
   /courses:
@@ -131,14 +135,14 @@ paths:
         - courses
       summary: Get all courses
       responses:
-        '200':
+        "200":
           description: A list of all courses
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Course'
+                  $ref: "#/components/schemas/Course"
     post:
       tags:
         - courses
@@ -148,14 +152,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CourseInput'
+              $ref: "#/components/schemas/CourseInput"
       responses:
-        '201':
+        "201":
           description: Course has been created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Course'
+                $ref: "#/components/schemas/Course"
   /courses/{id}:
     parameters:
       - name: id
@@ -169,13 +173,13 @@ paths:
         - courses
       summary: Get a course by its ID
       responses:
-        '200':
+        "200":
           description: Details of the course
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Course'
-        '404':
+                $ref: "#/components/schemas/Course"
+        "404":
           description: Course not found
     put:
       tags:
@@ -186,24 +190,24 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CourseInput'
+              $ref: "#/components/schemas/CourseInput"
       responses:
-        '200':
+        "200":
           description: Course successfully updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Course'
-        '404':
+                $ref: "#/components/schemas/Course"
+        "404":
           description: Course not found
     delete:
       tags:
         - courses
       summary: Delete a course
       responses:
-        '204':
+        "204":
           description: Course successfully deleted
-        '404':
+        "404":
           description: Course has not been found
 
   /teachers:
@@ -212,14 +216,14 @@ paths:
         - Teacher
       summary: Get all teachers
       responses:
-        '200':
+        "200":
           description: A list of all teachers
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Teacher'
+                  $ref: "#/components/schemas/Teacher"
     post:
       tags:
         - Teacher
@@ -229,14 +233,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TeacherInput'
+              $ref: "#/components/schemas/TeacherInput"
       responses:
-        '201':
+        "201":
           description: Teacher created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Teacher'
+                $ref: "#/components/schemas/Teacher"
   /teachers/{id}:
     parameters:
       - name: id
@@ -250,13 +254,13 @@ paths:
         - Teacher
       summary: Get a teacher by its ID
       responses:
-        '200':
+        "200":
           description: Teacher's Details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Teacher'
-        '404':
+                $ref: "#/components/schemas/Teacher"
+        "404":
           description: Teacher not found
     put:
       tags:
@@ -267,24 +271,24 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TeacherInput'
+              $ref: "#/components/schemas/TeacherInput"
       responses:
-        '200':
+        "200":
           description: Teacher successfully updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Teacher'
-        '404':
+                $ref: "#/components/schemas/Teacher"
+        "404":
           description: Teacher not found
     delete:
       tags:
         - Teacher
       summary: Delete a teacher
       responses:
-        '204':
+        "204":
           description: Teacher successfully deleted
-        '404':
+        "404":
           description: Teacher not found
 
   /rooms:
@@ -293,14 +297,14 @@ paths:
         - Rooms
       summary: Get all rooms
       responses:
-        '200':
+        "200":
           description: A list of rooms
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Room'
+                  $ref: "#/components/schemas/Room"
     post:
       tags:
         - Rooms
@@ -310,14 +314,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RoomInput'
+              $ref: "#/components/schemas/RoomInput"
       responses:
-        '201':
+        "201":
           description: room has been created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Room'
+                $ref: "#/components/schemas/Room"
   /rooms/{id}:
     parameters:
       - name: id
@@ -331,13 +335,13 @@ paths:
         - Rooms
       summary: room returned by its ID
       responses:
-        '200':
+        "200":
           description: Details of the roomes
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Room'
-        '404':
+                $ref: "#/components/schemas/Room"
+        "404":
           description: room not found
     put:
       tags:
@@ -348,24 +352,24 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RoomInput'
+              $ref: "#/components/schemas/RoomInput"
       responses:
-        '200':
+        "200":
           description: room has been updated successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Room'
-        '404':
+                $ref: "#/components/schemas/Room"
+        "404":
           description: room not found
     delete:
       tags:
         - Rooms
       summary: room delete
       responses:
-        '204':
+        "204":
           description: room deleted successfully
-        '404':
+        "404":
           description: room not found
 
 components:
@@ -392,7 +396,7 @@ components:
         enrolledCourses:
           type: array
           items:
-            $ref: '#/components/schemas/CourseSimple'
+            $ref: "#/components/schemas/CourseSimple"
           description: List of courses the student has enrolled for
       required:
         - id
@@ -436,10 +440,10 @@ components:
           description: Short description of a course
           example: Grundlagen der Informatik und Python
         teacher:
-          $ref: '#/components/schemas/TeacherSimple'
+          $ref: "#/components/schemas/TeacherSimple"
           description: The teacher hosting the course
         room:
-          $ref: '#/components/schemas/RoomSimple'
+          $ref: "#/components/schemas/RoomSimple"
           description: The room the course will happen in
         studentIds:
           type: array
