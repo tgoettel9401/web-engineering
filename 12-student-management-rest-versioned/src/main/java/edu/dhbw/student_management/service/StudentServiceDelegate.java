@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 @Component
-public class StudentServiceFactory {
+public class StudentServiceDelegate {
 
     private final Map<String, StudentServiceInterface> servicesByVersion = new HashMap<>();
 
-    public StudentServiceFactory(Map<String, StudentServiceInterface> services) {
+    public StudentServiceDelegate(Map<String, StudentServiceInterface> services) {
         services.forEach((beanName, svc) -> {
             String n = beanName.toLowerCase();
             if (n.contains("v1")) {

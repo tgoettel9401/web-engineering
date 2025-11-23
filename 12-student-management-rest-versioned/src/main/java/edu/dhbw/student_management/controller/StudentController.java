@@ -13,40 +13,41 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.dhbw.student_management.entity.Student;
-import edu.dhbw.student_management.service.StudentServiceFactory;
+import edu.dhbw.student_management.service.StudentServiceDelegate;
 
 @RestController
 @RequestMapping("/api/{version}/students")
-public class StudentControllerDelegating {
+public class StudentController {
 
-    private final StudentServiceFactory factory;
+    private final StudentServiceDelegate delegate;
 
-    public StudentControllerDelegating(StudentServiceFactory factory) {
-        this.factory = factory;
+    public StudentController(StudentServiceDelegate delegate) {
+        this.delegate = delegate;
     }
 
     @GetMapping
     public List<Student> getAllStudents(@PathVariable String version) {
-        return factory.getForVersion(version).getAllStudents();
+        return delegate.getForVersion(version).getAllStudents();
     }
 
     @GetMapping("/{id}")
     public Student getStudentById(@PathVariable String version, @PathVariable Long id) {
-        return factory.getForVersion(version).getStudentById(id);
+        return delegate.getForVersion(version).getStudentById(id);
     }
 
     @PostMapping
     public Student createStudent(@PathVariable String version, @RequestBody Student student) {
-        return factory.getForVersion(version).createStudent(student);
+        return delegate.getForVersion(version).createStudent(student);
     }
 
     @PutMapping("/{id}")
-    public Student updateStudent(@PathVariable String version, @PathVariable Long id, @RequestBody Student studentDetails) {
-        return factory.getForVersion(version).updateStudent(id, studentDetails);
+    public Student updateStudent(@PathVariable String version, @PathVariable Long id,
+            @RequestBody Student studentDetails) {
+        return delegate.getForVersion(version).updateStudent(id, studentDetails);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteStudent(@PathVariable String version, @PathVariable Long id) {
-        return factory.getForVersion(version).deleteStudent(id);
+        return delegate.getForVersion(version).deleteStudent(id);
     }
 }

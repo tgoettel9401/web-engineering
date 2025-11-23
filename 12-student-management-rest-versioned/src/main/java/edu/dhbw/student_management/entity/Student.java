@@ -26,6 +26,10 @@ public class Student {
         this.matrikelnummer = matrikelnummer;
     }
 
+    // Default constructor needed for JSON deserialization in tests and controllers
+    public Student() {
+    }
+
     public Long getId() {
         return this.id;
     }
