@@ -41,13 +41,13 @@ class StudentControllerDelegationTest {
         when(serviceV1.getAllStudents()).thenReturn(v1List);
         when(serviceV2.getAllStudents()).thenReturn(v2List);
 
-        List<Student> res1 = controller.getAllStudents("v1");
+        List<Student> res1 = controller.getAllStudentsV1();
         verify(delegate).getForVersion("v1");
         verify(serviceV1).getAllStudents();
         verifyNoInteractions(serviceV2);
         assertSame(v1List, res1);
 
-        List<Student> res2 = controller.getAllStudents("v2");
+        List<Student> res2 = controller.getAllStudentsV2();
         verify(delegate).getForVersion("v2");
         verify(serviceV2).getAllStudents();
         verifyNoMoreInteractions(serviceV1);
@@ -68,12 +68,12 @@ class StudentControllerDelegationTest {
         when(serviceV1.createStudent(inputV1)).thenReturn(returnedV1);
         when(serviceV2.createStudent(inputV2)).thenReturn(returnedV2);
 
-        Student r1 = controller.createStudent("v1", inputV1);
+        Student r1 = controller.createStudentV1(inputV1);
         verify(delegate).getForVersion("v1");
         verify(serviceV1).createStudent(inputV1);
         assertEquals(100L, r1.getId());
 
-        Student r2 = controller.createStudent("v2", inputV2);
+        Student r2 = controller.createStudentV2(inputV2);
         verify(delegate).getForVersion("v2");
         verify(serviceV2).createStudent(inputV2);
         assertEquals(5L, r2.getId());
@@ -90,12 +90,12 @@ class StudentControllerDelegationTest {
         when(serviceV1.getStudentById(21L)).thenReturn(s1);
         when(serviceV2.getStudentById(2L)).thenReturn(s2);
 
-        Student r1 = controller.getStudentById("v1", 21L);
+        Student r1 = controller.getStudentByIdV1(21L);
         verify(delegate).getForVersion("v1");
         verify(serviceV1).getStudentById(21L);
         assertEquals(21L, r1.getId());
 
-        Student r2 = controller.getStudentById("v2", 2L);
+        Student r2 = controller.getStudentByIdV2(2L);
         verify(delegate).getForVersion("v2");
         verify(serviceV2).getStudentById(2L);
         assertEquals(2L, r2.getId());
@@ -109,12 +109,12 @@ class StudentControllerDelegationTest {
         when(serviceV1.deleteStudent(13L)).thenReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).body(""));
         when(serviceV2.deleteStudent(3L)).thenReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).body(""));
 
-        ResponseEntity<String> resp1 = controller.deleteStudent("v1", 13L);
+        ResponseEntity<String> resp1 = controller.deleteStudentV1(13L);
         verify(delegate).getForVersion("v1");
         verify(serviceV1).deleteStudent(13L);
         assertEquals(HttpStatus.NO_CONTENT, resp1.getStatusCode());
 
-        ResponseEntity<String> resp2 = controller.deleteStudent("v2", 3L);
+        ResponseEntity<String> resp2 = controller.deleteStudentV2(3L);
         verify(delegate).getForVersion("v2");
         verify(serviceV2).deleteStudent(3L);
         assertEquals(HttpStatus.NO_CONTENT, resp2.getStatusCode());
