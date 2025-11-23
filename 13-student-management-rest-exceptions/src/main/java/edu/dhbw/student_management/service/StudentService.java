@@ -1,6 +1,7 @@
 package edu.dhbw.student_management.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +40,8 @@ public class StudentService {
         return student;
     }
 
-    public Student getStudentById(Long id) {
-        return student;
+    public Optional<Student> getStudentById(Long id) {
+        return id == 1 ? Optional.ofNullable(student) : Optional.empty();
     }
 
     /**

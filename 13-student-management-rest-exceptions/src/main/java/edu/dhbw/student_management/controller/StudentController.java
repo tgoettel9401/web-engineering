@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.dhbw.student_management.entity.Student;
+import edu.dhbw.student_management.exception.CustomResourceNotFoundException;
 import edu.dhbw.student_management.service.StudentService;
 
 @RestController
@@ -46,9 +47,8 @@ public class StudentController {
      */
     @GetMapping("/{id}")
     public Student getStudentById(@PathVariable Long id) {
-        // Hier greifen wir später auf die Datenbank zu und laden den Studenten aus der
-        // Datenbank
-        return studentService.getStudentById(id);
+        return studentService.getStudentById(id)
+                .orElseThrow(() -> new CustomResourceNotFoundException("Student not found with id " + id));
     }
 
     /**
@@ -73,7 +73,9 @@ public class StudentController {
      */
     @PutMapping("/{id}")
     public Student updateStudent(@PathVariable Long id, @RequestBody Student studentDetails) {
-        // Hier greifen wir später auf die Datenbank zu und aktualisieren den Studenten
+        // Prüfe Existenz über Optional und werfe 404 falls nicht vorhanden
+        studentService.getStudentById(id)
+                .orElseThrow(() -> new CustomResourceNotFoundException("Student not found with id " + id));
         return studentService.updateStudent(id, studentDetails);
     }
 
@@ -85,7 +87,8 @@ public class StudentController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteStudent(@PathVariable Long id) {
-        // Hier greifen wir später auf die Datenbank zu und löschen den Studenten
+        studentService.getStudentById(id)
+                .orElseThrow(() -> new CustomResourceNotFoundException("Student not found with id " + id));
         return studentService.deleteStudent(id);
     }
 
