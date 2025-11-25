@@ -1,0 +1,72 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.6'
+	id 'io.spring.dependency-management' version '1.1.7'
+	id 'jacoco'
+}
+
+group = 'edu.dhbw'
+version = '0.0.1-SNAPSHOT'
+description = 'Demo project for Spring Boot'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	runtimeOnly 'com.h2database:h2'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+jacoco {
+	toolVersion = '0.8.12'
+}
+
+tasks.named('jacocoTestReport') {
+	dependsOn tasks.test
+	reports {
+		html.required = true
+		xml.required = true
+		csv.required = false
+	}
+	// Exclude legacy duplicate impl from coverage to avoid skew
+	classDirectories.setFrom(
+		files(sourceSets.main.output).asFileTree.matching {
+			exclude '**/edu/dhbw/student_management/service/StudentServiceImpl.class'
+		}
+	)
+}
+
+tasks.named('jacocoTestCoverageVerification') {
+	dependsOn tasks.test
+	rules {
+		rule {
+			limit {
+				counter = 'INSTRUCTION'
+				value = 'COVEREDRATIO'
+				minimum = 0.70
+			}
+		}
+	}
+	classDirectories.setFrom(
+		files(sourceSets.main.output).asFileTree.matching {
+			exclude '**/edu/dhbw/student_management/service/StudentServiceImpl.class'
+		}
+	)
+}
