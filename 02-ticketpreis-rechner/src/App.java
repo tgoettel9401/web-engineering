@@ -4,21 +4,23 @@ public class App {
 
     /**
      * Berechnet den finalen Ticketpreis basierend auf Alter und Wochentag.
-     * @param alter Das Alter des Besuchers (in Jahren).
+     * 
+     * @param alter     Das Alter des Besuchers (in Jahren).
      * @param wochentag Der Wochentag (z.B. "Montag", "Dienstag").
      * @return Der berechnete Endpreis, oder -1.0 bei ungültiger Eingabe.
      */
-    public static double berechneTicketpreis(int alter, String wochentag) {
-        
-        // Sonderregel: Fehlerhafte Eingabe - später lösen wir das mit Exceptions und verbessern das Verhalten!
+    public static double berechneTicketpreis(int alter, String wochentag) throws AgeNotValidException {
+
+        // Sonderregel: Fehlerhafte Eingabe - später lösen wir das mit Exceptions und
+        // verbessern das Verhalten!
         if (alter < 0) {
-            return -1.0;
+            throw new AgeNotValidException("Alter " + alter + " ist nicht erlaubt");
         }
 
         double basispreis;
 
         // --- Regelwerk A: Altersrabatte (if-else if-Kette) ---
-        
+
         if (alter <= 5) {
             // Kleinkind: 0-5 Jahre
             basispreis = 0.00;
@@ -39,7 +41,7 @@ public class App {
         }
 
         // --- Regelwerk B: Zusätzlicher Wochentags-Rabatt (Switch-Statement) ---
-        
+
         // Konvertiere den Input-String in Kleinbuchstaben für einen robusten Vergleich
         String tag = wochentag.toLowerCase();
 
@@ -57,7 +59,8 @@ public class App {
                 // Kein Rabatt/Aufschlag
                 break;
             default:
-                // Unbekannter Wochentag, kein Rabatt. Die Validierung sparen wir uns an der Stelle!
+                // Unbekannter Wochentag, kein Rabatt. Die Validierung sparen wir uns an der
+                // Stelle!
                 break;
         }
 
@@ -73,24 +76,44 @@ public class App {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Willkommen beim Ticketpreisrechner!");
-        
+
         // 1. Alter abfragen
         System.out.print("Bitte gib das Alter des Besuchers ein: ");
+
+        boolean isValid = false;
+        while (!isValid) {
+            int alter = scanner.nextInt();
+            if (alter < 0) {
+                System.out.println("Achtung, nur ein Alter <= 0 ist erlaubt");
+            } else {
+                isValid = true;
+            }
+        }
         // Nächste Ganzzahl lesen
-        int alter = scanner.nextInt();
-        
+
         // 2. Wochentag abfragen
-        // nextLine() nach nextInt() verwenden, um den verbleibenden Zeilenumbruch zu konsumieren
-        scanner.nextLine(); 
-        System.out.print("Bitte gib den Wochentag ein (möglich sind: Montag, Dienstag, Mittwoch, Donnerstag, Freitag, Samstag, Sonntag): ");
+        // nextLine() nach nextInt() verwenden, um den verbleibenden Zeilenumbruch zu
+        // konsumieren
+        scanner.nextLine();
+        System.out.print(
+                "Bitte gib den Wochentag ein (möglich sind: Montag, Dienstag, Mittwoch, Donnerstag, Freitag, Samstag, Sonntag): ");
         // Nächste Zeile als Wochentag lesen
         String wochentag = scanner.nextLine();
-        
+
         // Berechnung aufrufen
-        double endpreis = berechneTicketpreis(alter, wochentag);
+        double endpreis = 0.0;
+
+        try {
+            endpreis = berechneTicketpreis(alter, wochentag);
+        } catch (AgeNotValidException exception) {
+            System.out.println("Es ist ein Fehler aufgetreten");
+            System.out.println(exception.getMessage());
+            scanner.close();
+            System.exit(1);
+        }
 
         // --- Ausgabe des Ergebnisses ---
-        
+
         if (endpreis == -1.0) {
             System.out.println("\nFehler: Das eingegebene Alter (" + alter + ") ist ungültig.");
         } else {
