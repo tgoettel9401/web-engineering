@@ -14,9 +14,15 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name = "courses")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Course {
+
     @Id
     @SequenceGenerator(name = "course_seq", sequenceName = "course_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "course_seq")
@@ -30,10 +36,12 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Teacher teacher;
 
     @ManyToOne
     @JoinColumn(name = "room_id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Room room;
 
     /**

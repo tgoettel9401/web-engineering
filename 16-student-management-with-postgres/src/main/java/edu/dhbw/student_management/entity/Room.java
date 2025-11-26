@@ -12,9 +12,15 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name = "rooms")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Room {
+
     @Id
     @SequenceGenerator(name = "room_seq", sequenceName = "room_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "room_seq")
@@ -30,6 +36,7 @@ public class Room {
     private Integer capacity;
 
     @OneToMany(mappedBy = "room")
+    @JsonIdentityReference(alwaysAsId = true)
     private List<Course> courses = new ArrayList<>();
 
     public Room() {
