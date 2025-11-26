@@ -28,6 +28,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/courses**")
                 .permitAll()
 
+                // Actuator endpoints accessible only to users with ADMIN role
+                .requestMatchers("/actuator/**").hasRole("ADMIN")
+
                 // All other endpoints are authenticated
                 .anyRequest().authenticated());
 
