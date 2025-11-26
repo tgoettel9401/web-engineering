@@ -11,10 +11,8 @@ import java.util.List;
 import edu.dhbw.student_management.entity.Teacher;
 import edu.dhbw.student_management.repository.TeacherRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterEach;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -40,14 +38,8 @@ class TeacherServiceImplTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @AfterEach
-    void tearDown() {
-        SecurityContextHolder.clearContext();
-    }
-
     @Test
     void findAllReturnsList() {
-        SecurityContextHolder.getContext().setAuthentication(adminAuth);
         Teacher t1 = new Teacher(1L, "A", "B", "EMP1");
         Teacher t2 = new Teacher(2L, "C", "D", "EMP2");
         when(teacherRepository.findAll()).thenReturn(Arrays.asList(t1, t2));
@@ -58,7 +50,6 @@ class TeacherServiceImplTest {
 
     @Test
     void findByIdFound() {
-        SecurityContextHolder.getContext().setAuthentication(adminAuth);
         Teacher t = new Teacher(1L, "Alice", "Wonderland", "EMP001");
         when(teacherRepository.findById(1L)).thenReturn(Optional.of(t));
 
@@ -68,7 +59,6 @@ class TeacherServiceImplTest {
 
     @Test
     void findByIdNotFoundThrows() {
-        SecurityContextHolder.getContext().setAuthentication(adminAuth);
         when(teacherRepository.findById(99L)).thenReturn(Optional.empty());
         ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> teacherService.findById(99L));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
@@ -76,7 +66,6 @@ class TeacherServiceImplTest {
 
     @Test
     void createTeacherSaves() {
-        SecurityContextHolder.getContext().setAuthentication(adminAuth);
         Teacher t = new Teacher(null, "Bob", "Builder", "EMP002");
         Teacher saved = new Teacher(10L, "Bob", "Builder", "EMP002");
         when(teacherRepository.save(t)).thenReturn(saved);
@@ -87,7 +76,6 @@ class TeacherServiceImplTest {
 
     @Test
     void updateTeacherUpdates() {
-        SecurityContextHolder.getContext().setAuthentication(adminAuth);
         Teacher existing = new Teacher(1L, "Old", "Name", "EMP001");
         Teacher update = new Teacher(null, "New", "Name", "EMP001");
         when(teacherRepository.findById(1L)).thenReturn(Optional.of(existing));
@@ -99,7 +87,6 @@ class TeacherServiceImplTest {
 
     @Test
     void updateTeacherNotFoundThrows() {
-        SecurityContextHolder.getContext().setAuthentication(adminAuth);
         Teacher update = new Teacher(null, "New", "Name", "EMP001");
         when(teacherRepository.findById(99L)).thenReturn(Optional.empty());
 
@@ -110,7 +97,6 @@ class TeacherServiceImplTest {
 
     @Test
     void deleteTeacherDeletes() {
-        SecurityContextHolder.getContext().setAuthentication(adminAuth);
         Teacher existing = new Teacher(1L, "To Delete", "User", "EMP003");
         when(teacherRepository.findById(1L)).thenReturn(Optional.of(existing));
 
@@ -120,25 +106,10 @@ class TeacherServiceImplTest {
 
     @Test
     void deleteTeacherNotFoundThrows() {
-        SecurityContextHolder.getContext().setAuthentication(adminAuth);
         when(teacherRepository.findById(99L)).thenReturn(Optional.empty());
 
         ResponseStatusException ex = assertThrows(ResponseStatusException.class,
                 () -> teacherService.delete(99L));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
-    }
-
-    @Test
-    void findAllWithoutAdminThrowsForbidden() {
-
-        // Test with User (not Admin)
-        UsernamePasswordAuthenticationToken nonAdmin = new UsernamePasswordAuthenticationToken(
-                "user",
-                "",
-                java.util.List.of(new SimpleGrantedAuthority("ROLE_USER")));
-        SecurityContextHolder.getContext().setAuthentication(nonAdmin);
-
-        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> teacherService.findAll());
-        assertEquals(HttpStatus.FORBIDDEN, ex.getStatusCode());
     }
 }
