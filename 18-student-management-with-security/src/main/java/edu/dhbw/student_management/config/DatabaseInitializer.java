@@ -2,6 +2,9 @@ package edu.dhbw.student_management.config;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import edu.dhbw.student_management.entity.Course;
 import edu.dhbw.student_management.entity.Room;
@@ -11,6 +14,8 @@ import edu.dhbw.student_management.service.CourseService;
 import edu.dhbw.student_management.service.RoomService;
 import edu.dhbw.student_management.service.StudentService;
 import edu.dhbw.student_management.service.TeacherService;
+import edu.dhbw.student_management.entity.User;
+import edu.dhbw.student_management.service.UserService;
 
 @Configuration
 public class DatabaseInitializer implements CommandLineRunner {
@@ -19,17 +24,26 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final CourseService courseService;
     private final TeacherService teacherService;
     private final RoomService roomService;
+    private final UserService userService;
 
     public DatabaseInitializer(StudentService studentService, CourseService courseService,
-            TeacherService teacherService, RoomService roomService) {
+            TeacherService teacherService, RoomService roomService, UserService userService) {
         this.studentService = studentService;
         this.courseService = courseService;
         this.teacherService = teacherService;
         this.roomService = roomService;
+        this.userService = userService;
     }
 
     @Override
     public void run(String... args) throws Exception {
+        // temporarily set an admin Authentication so service-level checks allow initialization
+        UsernamePasswordAuthenticationToken initAuth = new UsernamePasswordAuthenticationToken(
+            "system-init",
+            "",
+            java.util.List.of(new SimpleGrantedAuthority("ROLE_ADMIN")));
+        SecurityContextHolder.getContext().setAuthentication(initAuth);
+
         // Create teachers
         Teacher t1 = new Teacher(null, "Anna", "Lehmann", "EMP-001");
         Teacher t2 = new Teacher(null, "Boris", "Keller", "EMP-002");
@@ -66,6 +80,20 @@ public class DatabaseInitializer implements CommandLineRunner {
         Student s3 = new Student(null, "Moritz", "Hans", "228844");
         s3.addCourse(c2);
         studentService.createStudent(s3);
+
+        // create default users for authentication
+        try {
+            User admin = new User(null, "admin", "admin", "ROLE_ADMIN");
+            userService.createUser(admin);
+
+            User user = new User(null, "user", "password", "ROLE_USER");
+            userService.createUser(user);
+        } catch (Exception e) {
+            // ignore on re-run
+        }
+
+        // clear the temporary authentication
+        SecurityContextHolder.clearContext();
     }
 
 }

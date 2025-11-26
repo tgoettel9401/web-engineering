@@ -18,6 +18,7 @@ import edu.dhbw.student_management.service.CourseService;
 import edu.dhbw.student_management.service.RoomService;
 import edu.dhbw.student_management.service.StudentService;
 import edu.dhbw.student_management.service.TeacherService;
+import edu.dhbw.student_management.service.UserService;
 
 class DatabaseInitializerTest {
 
@@ -33,12 +34,14 @@ class DatabaseInitializerTest {
     @Mock
     private RoomService roomService;
 
+    private UserService userService;
+
     private DatabaseInitializer initializer;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        initializer = new DatabaseInitializer(studentService, courseService, teacherService, roomService);
+        initializer = new DatabaseInitializer(studentService, courseService, teacherService, roomService, userService);
     }
 
     @Test
