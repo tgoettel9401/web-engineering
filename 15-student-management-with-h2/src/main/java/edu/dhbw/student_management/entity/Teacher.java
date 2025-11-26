@@ -1,5 +1,9 @@
 package edu.dhbw.student_management.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,6 +18,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "teachers")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Teacher {
     @Id
     @SequenceGenerator(name = "teacher_seq", sequenceName = "teacher_seq", allocationSize = 1)
@@ -30,6 +35,7 @@ public class Teacher {
     private String employeeNumber;
 
     @OneToMany(mappedBy = "teacher")
+    @JsonIdentityReference(alwaysAsId = true)
     private List<Course> courses = new ArrayList<>();
 
     public Teacher() {
