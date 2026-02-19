@@ -1,0 +1,40 @@
+{
+  "name": "Java",
+  "image": "mcr.microsoft.com/devcontainers/java:dev-25",
+
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "none",
+      "installMaven": "false",
+      "installGradle": "false"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "vmware.vscode-spring-boot",
+        "vscjava.vscode-spring-boot-dashboard",
+        "vscjava.vscode-spring-initializr",
+
+        "vscjava.vscode-gradle",
+
+        "gabrielbb.vscode-lombok",
+        "humao.rest-client",
+
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg",
+        "ms-azuretools.vscode-docker",
+
+        "redhat.vscode-yaml",
+        "esbenp.prettier-vscode"
+      ],
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "spring-boot.ls.symbols.enabled": true
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+meta {
+  name: GET starship/id
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUri}}/starships/12
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
